@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Out</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .signout-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        .signout-container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .signout-container button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #dc3545;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .signout-container button:hover {
+            background-color: #c82333;
+        }
+        .signout-container .message {
+            color: green;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .signout-container .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="signout-container">
+        <h2>Sign Out</h2>
+        <button id="signoutButton">Sign Out</button>
+        <div id="message" class="message"></div>
+        <div id="error" class="error"></div>
+    </div>
+
+    <script>
+        document.getElementById('signoutButton').addEventListener('click', async function() {
+            const message = document.getElementById('message');
+            const error = document.getElementById('error');
+            
+            try {
+                // Send sign-out request
+                const response = await fetch('/signout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include' // Include cookies for session handling
+                });
+
+                if (response.ok) {
+                    message.textContent = 'You have been signed out.';
+                    message.className = 'message';
+                    // Redirect to login page or home page
+                    window.location.href = '/login'; // Example redirect
+                } else {
+                    error.textContent = 'Sign-out failed. Please try again.';
+                }
+            } catch (err) {
+                error.textContent = 'Network error. Please try again later.';
+            }
+        });
+    </script>
+</body>
+</html>
